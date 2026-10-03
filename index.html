@@ -38,6 +38,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+  /* Fixed design canvas: everything is laid out in px on a 390px-wide card, then the whole
+     card is scaled to fit the screen (see fitCard below). So proportions and margins are
+     identical on every phone, nothing scrolls, and browser/OS text-size settings can't
+     push lines into each other. */
   :root{
     --paper:#FFFFFF;
     --backdrop:#DFE0DA;
@@ -47,59 +51,50 @@
     --ink:#111315;
     --ink-soft:#3D4347;
     --naskh:"Noto Naskh Arabic", "Traditional Arabic", serif;
+    --amiri:"Amiri", "Noto Naskh Arabic", serif;
   }
 
   *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
+  html{-webkit-text-size-adjust:none;text-size-adjust:none}
+  [hidden]{display:none!important}
 
-  body{
-    margin:0;
-    background:var(--backdrop);
-    font-family:var(--naskh);
-    color:var(--ink);
-    display:flex;
-    justify-content:center;
-    min-height:100svh;
-  }
+  body{margin:0;background:var(--paper);font-family:var(--naskh);color:var(--ink)}
+  html.fit,html.fit body{height:100%;overflow:hidden}
 
-  /* the white paper */
+  /* the white paper (390px design canvas) */
   .card{
-    width:100%;
-    max-width:27rem;
-    min-height:100svh;
+    width:390px;
+    margin:0 auto;
     background:var(--paper);
     display:flex;
-    padding:clamp(12px,4.5vw,22px);      /* the white margin before the frame */
-    box-shadow:0 0 0 1px rgba(17,19,21,.05), 0 16px 48px rgba(17,19,21,.1);
-    animation:settle .7s ease-out both;
+    padding:16px;                       /* white margin before the frame */
+    animation:settle .6s ease-out both;
   }
-  @keyframes settle{from{opacity:0;transform:translateY(10px)}}
+  html.fit .card{position:absolute;top:0;left:0;margin:0;transform-origin:0 0}
+  @keyframes settle{from{opacity:0}}
 
   /* the ornamental frame */
   .frame{
     flex:1;
     display:flex;
     flex-direction:column;
-    justify-content:center;
-    gap:clamp(.55rem,1.7vh,1.3rem);
+    justify-content:space-evenly;       /* spare height is shared evenly */
+    gap:7px;                            /* …never closer than this */
     text-align:center;
-    padding:clamp(.8rem,3.5vw,1.5rem) clamp(.4rem,2vw,1.1rem);
-    border:clamp(17px,6vw,26px) solid transparent;
+    padding:8px;
+    border:22px solid transparent;
     border-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M28.5 9.0H91.5A19.5 19.5 0 0 0 111.0 28.5V91.5A19.5 19.5 0 0 0 91.5 111.0H28.5A19.5 19.5 0 0 0 9.0 91.5V28.5A19.5 19.5 0 0 0 28.5 9.0Z' fill='none' stroke='%23397542' stroke-width='2.4'/%3E%3Cg fill='none' stroke='%2380724F' stroke-width='1.7'%3E%3Crect x='15.0' y='15.0' width='90.0' height='90.0'/%3E%3Crect x='9.0' y='9.0' width='6.0' height='6.0'/%3E%3Crect x='105.0' y='9.0' width='6.0' height='6.0'/%3E%3Crect x='105.0' y='105.0' width='6.0' height='6.0'/%3E%3Crect x='9.0' y='105.0' width='6.0' height='6.0'/%3E%3C/g%3E%3C/svg%3E") 30 stretch;
   }
 
   /* calligraphy: vector art traced from the printed original */
   .calli{margin:0 auto;color:var(--ink);line-height:0}
   .calli svg{display:block;width:100%;height:auto}
-  .c-basmala{width:62%}
+  .c-basmala{width:58%}
   .c-duaa{width:100%}
-  .c-thanks{width:74%}
+  .c-thanks{width:66%}
 
-  /* naskh body — matches the printed invitation */
-  .lead{
-    font-size:clamp(1rem,4.2vw,1.12rem);
-    color:var(--ink-soft);margin:0 0 .3rem;
-  }
+  /* naskh body */
+  .lead{font-size:15.5px;line-height:1.7;color:var(--ink-soft);margin:0 0 3px}
   .lead--strong{color:var(--ink);font-weight:700}
   /* «الإبن»: the font draws the hamza under the left end of the لإ ligature.
      We set «الابن» and add the font's own hamza (cropped from an isolated إ),
@@ -107,104 +102,51 @@
   .ibn{display:inline-block;position:relative;line-height:1}
   .ibn::after{content:"\0625";content:"\0625" / "";position:absolute;font-size:1em;line-height:1;
     top:-.05em;right:.4325em;clip-path:inset(.75em -.1em -.2em -.1em);pointer-events:none}
-  /* every name line uses the chosen font (#2, Amiri); titles stay naskh */
-  .name,.host,.bride{font-family:"Amiri","Noto Naskh Arabic",serif}
-  .host .title{font-family:var(--naskh)}
-  .name{
-    font-weight:700;
-    font-size:clamp(1.5rem,6.6vw,1.85rem);
-    line-height:1.55;margin:0;
-  }
-  .name .title{
-    display:block;font-weight:400;
-    font-size:clamp(1rem,4.2vw,1.12rem);
-    color:var(--ink-soft);margin-bottom:.1rem;
-  }
-  .hosts{
-    display:grid;grid-template-columns:1fr auto 1fr;
-    align-items:start;column-gap:clamp(.3rem,1.6vw,.6rem);
-    margin-inline:-.35rem;            /* room for the "و" without shrinking the names */
-  }
-  .host-and{align-self:end}
-  .host{
-    font-weight:700;
-    font-size:clamp(.96rem,4.25vw,1.15rem);   /* amiri runs ~12% narrower than naskh */
-    line-height:1.5;margin:0;white-space:nowrap;
-  }
-  .host .title{
-    display:block;font-weight:700;
-    font-size:clamp(.82rem,3.4vw,.9rem);
-    color:var(--ink);margin-bottom:.05rem;
-  }
-  .bride{
-    font-weight:700;
-    font-size:clamp(1.08rem,4.6vw,1.28rem);
-    line-height:1.7;margin:.4rem 0 0;text-wrap:balance;
-  }
-  .details{
-    font-size:clamp(1.02rem,4.4vw,1.15rem);
-    line-height:1.95;margin:0;
-  }
-  .details .date{white-space:nowrap}
-  .details .date bdi{direction:ltr;unicode-bidi:isolate}
-  .details .venue{display:block;font-weight:700;margin-top:.15rem}
-  .details .reception{display:block;font-size:.92em;color:var(--ink-soft)}
 
-  .rule{display:flex;align-items:center;justify-content:center;gap:.6rem;margin:0}
-  .rule i{display:block;height:1px;width:clamp(2.2rem,16vw,4.5rem);background:var(--tan)}
+  /* every name line uses the chosen font (#2, Amiri); titles stay naskh */
+  .name,.host,.bride{font-family:var(--amiri)}
+  .hosts{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:start;column-gap:6px;margin:0 -6px}
+  .host{font-weight:700;font-size:15.5px;line-height:1.45;margin:0;white-space:nowrap}
+  .host .title{display:block;font-family:var(--naskh);font-weight:700;font-size:12.5px;color:var(--ink);margin-bottom:1px}
+  .host-and{align-self:end}
+  .name{font-weight:700;font-size:23px;line-height:1.45;margin:0}
+  .bride{font-weight:700;font-size:16.5px;line-height:1.6;margin:3px 0 0;text-wrap:balance}
+
+  .rule{display:flex;align-items:center;justify-content:center;gap:9px;margin:0}
+  .rule i{display:block;height:1px;width:62px;background:var(--tan)}
   .rule b{display:block;width:6px;height:6px;background:var(--green);transform:rotate(45deg)}
 
+  .details{font-size:15.5px;line-height:1.65;margin:0}
+  .details .date{white-space:nowrap}
+  .details .date bdi{direction:ltr;unicode-bidi:isolate}
+  .details .date--greg{font-weight:700}
+  .details .venue{display:block;font-weight:700;margin-top:1px}
+  .details .reception{display:block;font-size:14.3px;color:var(--ink-soft)}
+
   .map{
-    display:inline-block;
-    font-family:var(--naskh);font-weight:700;
-    font-size:clamp(1rem,4.2vw,1.1rem);
+    display:inline-block;font-family:var(--naskh);font-weight:700;font-size:15px;
     color:var(--green-ink);text-decoration:none;
-    border:1.5px solid var(--green);
-    padding:.5rem 1.6rem;border-radius:2px;
+    border:1.5px solid var(--green);padding:5px 22px;border-radius:2px;
     transition:background-color .2s ease,color .2s ease;
   }
   .map:hover{background:var(--green);color:#fff}
   .map:focus-visible{outline:2px solid var(--tan);outline-offset:3px}
-
-  .cal{
-    display:block;font-family:var(--naskh);font-size:.9rem;
-    color:var(--ink-soft);margin-top:.5rem;
-  }
-  [hidden]{display:none!important}
-  /* countdown: days / hours / minutes in double-ruled tan boxes (design #3) */
-  .countdown{margin:.5rem 0 0}
-  .cd-boxes{display:inline-flex;gap:8px}
-  .cd-boxes div{width:3.1rem;padding:.15rem 0 .08rem;border:1px solid var(--tan);outline:1px solid var(--tan);outline-offset:2px}
-  .cd-boxes b{display:block;font-family:"Amiri",var(--naskh);font-weight:700;font-size:1.2rem;line-height:1.1;color:var(--green-ink)}
-  .cd-boxes span{display:block;font-size:.64rem;color:var(--ink-soft)}
-  .cd-cap{margin:.35rem 0 0;font-size:.78rem;color:var(--ink-soft)}
+  .cal{display:block;font-family:var(--naskh);font-size:13px;color:var(--ink-soft);margin-top:5px}
   .cal:focus-visible{outline:2px solid var(--green);outline-offset:2px}
 
-  /* short phones: keep the whole card on one screen */
-  @media (max-height:720px){
-    .frame{gap:clamp(.3rem,.95vh,.8rem);padding-block:.4rem}
-    .lead,.name .title{font-size:.94rem}
-    .name{font-size:1.26rem}
-    .host{font-size:.93rem}
-    .host .title{font-size:.78rem}
-    .bride{font-size:1.04rem}
-    .details{font-size:.96rem;line-height:1.7}
-    .countdown{margin-top:.35rem}
-    .cd-boxes div{width:2.9rem;padding:.08rem 0 .02rem}
-    .cd-boxes b{font-size:1.1rem;line-height:1.05}
-    .cd-boxes span{font-size:.6rem}
-    .cd-cap{margin-top:.25rem;font-size:.72rem}
-    .c-basmala{width:56%}
-    .c-thanks{width:66%}
-    .map{padding:.4rem 1.3rem;font-size:.95rem}
-    .cal{font-size:.82rem;margin-top:.35rem}
-  }
+  /* countdown: caption, then days / hours / minutes in double-ruled tan boxes (design #3) */
+  .countdown{margin:6px 0 0}
+  .cd-cap{margin:0 0 6px;font-size:12px;color:var(--ink-soft)}
+  .cd-boxes{display:inline-flex;gap:8px}
+  .cd-boxes div{width:46px;padding:2px 0 1px;border:1px solid var(--tan);outline:1px solid var(--tan);outline-offset:2px}
+  .cd-boxes b{display:block;font-family:var(--amiri);font-weight:700;font-size:18px;line-height:1.15;color:var(--green-ink)}
+  .cd-boxes span{display:block;font-size:9.5px;line-height:1.6;color:var(--ink-soft)}
 
-  @media (max-width:359px){
-    .host{font-size:.86rem}
-    .host .title{font-size:.72rem}
+  /* on a desktop screen the phone-sized card sits on a soft backdrop */
+  @media (min-width:600px){
+    body{background:var(--backdrop)}
+    .card{box-shadow:0 0 0 1px rgba(17,19,21,.05),0 16px 48px rgba(17,19,21,.1)}
   }
-
   @media (prefers-reduced-motion:reduce){.card{animation:none}}
 </style>
 </head>
@@ -236,7 +178,7 @@
 
   <p class="details">
     وذلك بمشيئة الله تعالى مساء يوم الجمعة
-    <br><span class="date"><bdi dir="ltr">2026/10/23</bdi>م</span>
+    <br><span class="date date--greg"><bdi dir="ltr">2026/10/23</bdi>م</span>
     <br>الموافق <span class="date"><bdi dir="ltr">1448/05/12</bdi>هـ</span>
     <span class="venue">في قاعة اليزيه للاحتفالات بالرياض</span>
     <span class="reception">يبدأ الاستقبال بعد صلاة المغرب</span>
@@ -246,12 +188,12 @@
     <a class="map" href="https://maps.app.goo.gl/WRDp3uiGdHvainDf6?g_st=ic" target="_blank" rel="noopener">الموقع على الخريطة</a>
     <a class="cal" href="زواج-عبدالرحمن-عمر-الدايل.ics" type="text/calendar" id="cal">أضف الموعد لتقويمك</a>
     <div class="countdown" id="countdown" role="timer" hidden>
+      <p class="cd-cap" id="cd-cap">باقي على موعد الزواج</p>
       <div class="cd-boxes">
         <div><b id="cd-d">0</b><span>يوم</span></div>
         <div><b id="cd-h">00</b><span>ساعة</span></div>
         <div><b id="cd-m">00</b><span>دقيقة</span></div>
       </div>
-      <p class="cd-cap" id="cd-cap">باقي على موعد الفرح</p>
     </div>
   </div>
 
@@ -271,10 +213,11 @@
   var boxes = box.querySelector('.cd-boxes'), cap = document.getElementById('cd-cap');
   var D = document.getElementById('cd-d'), H = document.getElementById('cd-h'), M = document.getElementById('cd-m');
   function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function refit() { if (window.fitCard) window.fitCard(); }
   function tick() {
     var now = Date.now();
-    if (now >= END) { box.hidden = true; return; }
-    if (now >= START) { boxes.hidden = true; cap.textContent = 'بدأ الاستقبال، حيّاكم الله'; box.hidden = false; return; }
+    if (now >= END) { if (!box.hidden) { box.hidden = true; refit(); } return; }
+    if (now >= START) { if (!boxes.hidden) { boxes.hidden = true; cap.textContent = 'بدأ الاستقبال، حيّاكم الله'; box.hidden = false; refit(); } return; }
     var mins = Math.ceil((START - now) / 60000);
     D.textContent = Math.floor(mins / 1440);
     H.textContent = pad(Math.floor(mins % 1440 / 60));
@@ -283,6 +226,44 @@
   }
   tick();
   setInterval(tick, 15000);
+})();
+</script>
+<script>
+/* Scale the 390px design canvas to fill the screen with no scrolling.
+   Phones: match the screen width; if the card is then too tall, shrink to the height instead.
+   Desktop: a phone-sized card centred on the backdrop. */
+(function () {
+  var card = document.querySelector('.card'), root = document.documentElement, W = 390;
+  function guardNames() {
+    /* if a device setting enlarges text, shrink both host names together so each stays on its line */
+    var hs = document.querySelectorAll('.hosts > .host:not(.host-and)'), k = 1, i;
+    for (i = 0; i < hs.length; i++) hs[i].style.fontSize = '';
+    for (i = 0; i < hs.length; i++)
+      if (hs[i].scrollWidth > hs[i].clientWidth + 1) k = Math.min(k, hs[i].clientWidth / hs[i].scrollWidth * 0.97);
+    if (k < 1) for (i = 0; i < hs.length; i++)
+      hs[i].style.fontSize = (parseFloat(getComputedStyle(hs[i]).fontSize) * k) + 'px';
+  }
+  function fit() {
+    var vw = window.innerWidth, vh = window.innerHeight, s, h;
+    root.classList.add('fit');
+    card.style.transform = 'none';
+    card.style.height = 'auto';
+    guardNames();
+    var natural = card.offsetHeight;
+    if (vw < 600) {
+      s = vw / W; h = vh / s;
+      if (h < natural) { s = vh / natural; h = natural; }
+    } else {
+      h = Math.max(natural, 780); s = Math.min(1.2, (vh - 48) / h);
+    }
+    card.style.height = h + 'px';
+    card.style.transform = 'translate(' + ((vw - W * s) / 2) + 'px,' + ((vh - h * s) / 2) + 'px) scale(' + s + ')';
+  }
+  window.fitCard = fit;
+  fit();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', fit);
 })();
 </script>
 </body>
