@@ -96,12 +96,6 @@
   /* naskh body */
   .lead{font-size:15.5px;line-height:1.7;color:var(--ink-soft);margin:0 0 3px}
   .lead--strong{color:var(--ink);font-weight:700}
-  /* «الإبن»: the font draws the hamza under the left end of the لإ ligature.
-     We set «الابن» and add the font's own hamza (cropped from an isolated إ),
-     nudged .15em right so it sits under the alef. Offsets are in em, so they scale. */
-  .ibn{display:inline-block;position:relative;line-height:1}
-  .ibn::after{content:"\0625";content:"\0625" / "";position:absolute;font-size:1em;line-height:1;
-    top:-.05em;right:.4325em;clip-path:inset(.75em -.1em -.2em -.1em);pointer-events:none}
 
   /* every name line uses the chosen font (#2, Amiri); titles stay naskh */
   .name,.host,.bride{font-family:var(--amiri)}
@@ -169,7 +163,7 @@
   </div>
 
   <div>
-    <p class="lead">بدعوتكم لحضور حفل زواج <span class="ibn">الابن</span></p>
+    <p class="lead">بدعوتكم لحضور حفل زواج الابن</p>
     <p class="name">عبدالرحمـن بـن عمـر الدايـل</p>
     <p class="bride">على كريمة الشيخ عبدالعزيز بن حمد المجلي</p>
   </div>
