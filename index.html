@@ -36,7 +36,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#FFFFFF;
@@ -101,6 +101,15 @@
     color:var(--ink-soft);margin:0 0 .3rem;
   }
   .lead--strong{color:var(--ink);font-weight:700}
+  /* «الإبن»: the font draws the hamza under the left end of the لإ ligature.
+     We set «الابن» and add the font's own hamza (cropped from an isolated إ),
+     nudged .15em right so it sits under the alef. Offsets are in em, so they scale. */
+  .ibn{display:inline-block;position:relative;line-height:1}
+  .ibn::after{content:"\0625";content:"\0625" / "";position:absolute;font-size:1em;line-height:1;
+    top:-.05em;right:.4325em;clip-path:inset(.75em -.1em -.2em -.1em);pointer-events:none}
+  /* every name line uses the chosen font (#4, Aref Ruqaa); titles stay naskh */
+  .name,.host,.bride{font-family:"Aref Ruqaa","Noto Naskh Arabic",serif}
+  .host .title{font-family:var(--naskh)}
   .name{
     font-weight:700;
     font-size:clamp(1.5rem,6.6vw,1.85rem);
@@ -119,7 +128,7 @@
   .host-and{align-self:end}
   .host{
     font-weight:700;
-    font-size:clamp(.85rem,3.75vw,1.02rem);
+    font-size:clamp(1.1rem,4.85vw,1.32rem);   /* ruqaa runs ~29% narrower than naskh */
     line-height:1.5;margin:0;white-space:nowrap;
   }
   .host .title{
@@ -167,7 +176,7 @@
     .frame{gap:clamp(.38rem,1.15vh,.9rem);padding-block:.5rem}
     .lead,.name .title{font-size:.94rem}
     .name{font-size:1.26rem}
-    .host{font-size:.82rem}
+    .host{font-size:1.06rem}
     .host .title{font-size:.78rem}
     .bride{font-size:1.04rem}
     .details{font-size:.96rem;line-height:1.8}
@@ -176,7 +185,7 @@
   }
 
   @media (max-width:359px){
-    .host{font-size:.76rem}
+    .host{font-size:.98rem}
     .host .title{font-size:.72rem}
   }
 
@@ -202,7 +211,7 @@
   </div>
 
   <div>
-    <p class="lead">بدعوتكم لحضور حفل زواج الإبن</p>
+    <p class="lead">بدعوتكم لحضور حفل زواج <span class="ibn">الابن</span></p>
     <p class="name">عبدالرحمـن بـن عمـر الدايـل</p>
     <p class="bride">على كريمة الشيخ عبدالعزيز بن حمد المجلي</p>
   </div>
@@ -211,7 +220,8 @@
 
   <p class="details">
     وذلك بمشيئة الله تعالى مساء يوم الجمعة
-    <br>الموافق <span class="date"><bdi dir="ltr">2026/10/23</bdi>م</span>
+    <br><span class="date"><bdi dir="ltr">2026/10/23</bdi>م</span>
+    <br>الموافق <span class="date"><bdi dir="ltr">1448/05/12</bdi>هـ</span>
     <span class="venue">في قاعة اليزيه للاحتفالات بالرياض</span>
   </p>
 
