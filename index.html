@@ -36,7 +36,7 @@
 <meta name="theme-color" content="#FFFFFF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#FFFFFF;
@@ -107,8 +107,8 @@
   .ibn{display:inline-block;position:relative;line-height:1}
   .ibn::after{content:"\0625";content:"\0625" / "";position:absolute;font-size:1em;line-height:1;
     top:-.05em;right:.4325em;clip-path:inset(.75em -.1em -.2em -.1em);pointer-events:none}
-  /* every name line uses the chosen font (#4, Aref Ruqaa); titles stay naskh */
-  .name,.host,.bride{font-family:"Aref Ruqaa","Noto Naskh Arabic",serif}
+  /* every name line uses the chosen font (#2, Amiri); titles stay naskh */
+  .name,.host,.bride{font-family:"Amiri","Noto Naskh Arabic",serif}
   .host .title{font-family:var(--naskh)}
   .name{
     font-weight:700;
@@ -128,7 +128,7 @@
   .host-and{align-self:end}
   .host{
     font-weight:700;
-    font-size:clamp(1.1rem,4.85vw,1.32rem);   /* ruqaa runs ~29% narrower than naskh */
+    font-size:clamp(.96rem,4.25vw,1.15rem);   /* amiri runs ~12% narrower than naskh */
     line-height:1.5;margin:0;white-space:nowrap;
   }
   .host .title{
@@ -176,7 +176,7 @@
     .frame{gap:clamp(.38rem,1.15vh,.9rem);padding-block:.5rem}
     .lead,.name .title{font-size:.94rem}
     .name{font-size:1.26rem}
-    .host{font-size:1.06rem}
+    .host{font-size:.93rem}
     .host .title{font-size:.78rem}
     .bride{font-size:1.04rem}
     .details{font-size:.96rem;line-height:1.8}
@@ -185,7 +185,7 @@
   }
 
   @media (max-width:359px){
-    .host{font-size:.98rem}
+    .host{font-size:.86rem}
     .host .title{font-size:.72rem}
   }
 
