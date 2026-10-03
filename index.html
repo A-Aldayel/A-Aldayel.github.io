@@ -137,10 +137,10 @@
   /* countdown: caption, then days / hours / minutes in double-ruled tan boxes (design #3) */
   .countdown{margin:6px 0 0}
   .cd-cap{margin:0 0 6px;font-size:12px;color:var(--ink-soft)}
-  .cd-boxes{display:inline-flex;gap:8px}
-  .cd-boxes div{width:46px;padding:2px 0 1px;border:1px solid var(--tan);outline:1px solid var(--tan);outline-offset:2px}
-  .cd-boxes b{display:block;font-family:var(--amiri);font-weight:700;font-size:18px;line-height:1.15;color:var(--green-ink)}
-  .cd-boxes span{display:block;font-size:9.5px;line-height:1.6;color:var(--ink-soft)}
+  .cd-boxes{display:inline-flex;gap:7px}
+  .cd-boxes div{width:41px;padding:2px 0 1px;border:1px solid var(--tan);outline:1px solid var(--tan);outline-offset:2px}
+  .cd-boxes b{display:block;font-family:var(--amiri);font-weight:700;font-size:16px;line-height:1.15;color:var(--green-ink)}
+  .cd-boxes span{display:block;font-size:8.5px;line-height:1.6;color:var(--ink-soft)}
 
   /* on a desktop screen the phone-sized card sits on a soft backdrop */
   @media (min-width:600px){
@@ -188,7 +188,7 @@
     <a class="map" href="https://maps.app.goo.gl/WRDp3uiGdHvainDf6?g_st=ic" target="_blank" rel="noopener">الموقع على الخريطة</a>
     <a class="cal" href="زواج-عبدالرحمن-عمر-الدايل.ics" type="text/calendar" id="cal">أضف الموعد لتقويمك</a>
     <div class="countdown" id="countdown" role="timer" hidden>
-      <p class="cd-cap" id="cd-cap">باقي على موعد الزواج</p>
+      <p class="cd-cap" id="cd-cap">الوقت المتبقي</p>
       <div class="cd-boxes">
         <div><b id="cd-d">0</b><span>يوم</span></div>
         <div><b id="cd-h">00</b><span>ساعة</span></div>
